@@ -1,0 +1,22 @@
+# API keys and secrets
+*_api_key.txt
+secrets/
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Data files (too large for Git)
+*.fits
+*.csv
+data/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
