@@ -1,5 +1,6 @@
 import streamlit as st
-st.title("Exoplanet")
+streamlit run streamlit_exoplanet.py
+
 
 
 
