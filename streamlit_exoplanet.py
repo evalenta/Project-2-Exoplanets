@@ -128,3 +128,33 @@ if prompt := st.chat_input("Type here"):
 import matplotlib.pyplot as plt
 #skyfield for pretty star data
 from skyfield.api import Star, load, 
+import numpy as np
+import matplotlib.pyplot as plt
+
+st.subheader("cute little sky circle")
+
+if st.button("Show circle with grid"):
+    fig, ax = plt.subplots(figsize=(6, 6))
+
+    # Draw outer circle (radius 1)
+    circle = plt.Circle((0, 0), 1, edgecolor='white', facecolor='darkblue')
+    ax.add_artist(circle)
+
+    # Radial gridlines (concentric circles)
+    for r in [0.25, 0.5, 0.75]:
+        ring = plt.Circle((0, 0), r, edgecolor='gray', facecolor='none', linewidth=0.5)
+        ax.add_artist(ring)
+
+    # Angular gridlines (spokes)
+    for angle_deg in range(0, 360, 30):
+        angle = np.deg2rad(angle_deg)
+        x = np.cos(angle)
+        y = np.sin(angle)
+        ax.plot([0, x], [0, y], color='gray', linewidth=0.5)
+
+    ax.set_aspect('equal')
+    ax.set_xlim(-1.05, 1.05)
+    ax.set_ylim(-1.05, 1.05)
+    ax.axis('off')  # hide axes frame/ticks
+
+    st.pyplot(fig)
