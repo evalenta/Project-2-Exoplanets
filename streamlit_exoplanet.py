@@ -168,10 +168,10 @@ if st.button("Show circle with grid"):
     ax.set_ylim(-1.05, 1.05)
     ax.axis('off')  # hide axes frame/ticks
  #maybe adding NSEW coordinates
-    ax.text (0.5, 1.05, 'N', transform=ax.transAxes, ha='center', va='bottom', fontsize=15), color= 'red'
-    ax.text (0.5, -0.05, 'S', transform=ax.transAxes, ha='center', va='bottom', fontsize=15), color= 'red'
-    ax.text (1.05, 0.5, 'E', transform=ax.transAxes, ha='center', va='bottom', fontsize=15), color= 'red'
-    ax.text (-0.05, 0.5, 'W', transform=ax.transAxes, ha='center', va='bottom', fontsize=15), color= 'red'   
+    ax.text(0.5, 1.05, 'N', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+    ax.text(0.5, -0.05, 'S', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+    ax.text(1.05, 0.5, 'E', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+    ax.text(-0.05, 0.5, 'W', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
     st.pyplot(fig)
 
    
