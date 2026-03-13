@@ -65,8 +65,8 @@ def prompt_llm(messages, model="openai/GPT-4.1-mini", temperature=0.2, max_token
         response = litellm.completion(
             model=model,
             messages=messages,
-            api_base=custom_api_base,
-            api_key=astro1221_key,
+            api_base=apiBase,
+            api_key=astro1221Key,
             temperature=temperature,
             max_tokens=max_tokens
         )
@@ -80,7 +80,7 @@ def prompt_llm(messages, model="openai/GPT-4.1-mini", temperature=0.2, max_token
         print(f"\nERROR: Could not connect. Details:\n{e}")    
         response = None
 
-    return response
+    return answer
 
 # streamlit run streamlit_exoplanet.py
 st.title("Exoplanet")
