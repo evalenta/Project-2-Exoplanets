@@ -171,4 +171,4 @@ if st.button("Show circle with grid"):
     st.pyplot(fig)
 
     #maybe adding NSEW coordinates
-    ax.text (0.5, 1.05, 'North', transform=ax.transAxes, ha='center', va='bottom' fontsize=12)
+    ax.text (0.5, 1.05, 'North', transform=ax.transAxes, ha='center', va='bottom', fontsize=12)
