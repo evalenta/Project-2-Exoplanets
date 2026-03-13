@@ -59,6 +59,8 @@ def prompt_llm(messages, model="openai/GPT-4.1-mini", temperature=0.2, max_token
     if not (isinstance(max_tokens, int) and max_tokens > 0):
         raise ValueError("max_tokens must be a positive integer.")
 
+    answer = None
+
     try: 
         print("Contacting LLM via University Server...")
 
@@ -79,6 +81,8 @@ def prompt_llm(messages, model="openai/GPT-4.1-mini", temperature=0.2, max_token
     except Exception as e:
         print(f"\nERROR: Could not connect. Details:\n{e}")    
         response = None
+        if answer is None:
+            answer = "Sorry, there was an error connecting to the language model. Please try again."
 
     return answer
 
@@ -120,3 +124,7 @@ if prompt := st.chat_input("Type here"):
     with st.chat_message("assistant"):
         st.write(response)
 
+#making a map of the sky and stuff
+import matplotlib.pyplot as plt
+#skyfield for pretty star data
+from skyfield.api import Star, load, 
