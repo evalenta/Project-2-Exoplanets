@@ -125,9 +125,8 @@ if prompt := st.chat_input("Type here"):
         st.write(response)
 
 #making a map of the sky and stuff
-import matplotlib.pyplot as plt
 #skyfield for pretty star data
-from skyfield.api import Star, load, 
+ 
 import numpy as np
 import matplotlib.pyplot as plt
 
