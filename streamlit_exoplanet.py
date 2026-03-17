@@ -175,7 +175,7 @@ if st.button("Show circle with grid"):
 
     st.pyplot(fig)
 
-   import numpy as np
+import numpy as np
 import matplotlib.pyplot as plt
 
 st.subheader("cute little sky circle2")
