@@ -69,83 +69,69 @@ with col2:
 with col3:
     st.header("Column 3")
     st.write("Content for column 3")
+    st.subheader("cute little sky circle")
 
+    if st.button("Show circle with grid"):
+        fig, ax = plt.subplots(figsize=(6, 6))
 
+        # Draw outer circle (radius 1)
+        circle = plt.Circle((0, 0), 1, edgecolor='white', facecolor='darkblue')
+        ax.add_artist(circle)
 
+        # Radial gridlines (concentric circles)
+        for r in [0.25, 0.5, 0.75]:
+            ring = plt.Circle((0, 0), r, edgecolor='gray', facecolor='none', linewidth=0.5)
+            ax.add_artist(ring)
 
-# Initialize
+        # Angular gridlines (spokes)
+        for angle_deg in range(0, 360, 30):
+            angle = np.deg2rad(angle_deg)
+            x = np.cos(angle)
+            y = np.sin(angle)
+            ax.plot([0, x], [0, y], color='gray', linewidth=0.5)
 
+        ax.set_aspect('equal')
+        ax.set_xlim(-1.05, 1.05)
+        ax.set_ylim(-1.05, 1.05)
+        ax.axis('off')  # hide axes frame/ticks
+    #maybe adding NSEW coordinates
+        ax.text(0.5, 1.05, 'N', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+        ax.text(0.5, -0.05, 'S', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+        ax.text(1.05, 0.5, 'E', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+        ax.text(-0.05, 0.5, 'W', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
 
-#making a map of the sky and stuff
-#skyfield for pretty star data
- 
+        st.pyplot(fig)
 
+    st.subheader("cute little sky circle2")
 
-st.subheader("cute little sky circle")
+    if st.button("Show circle with grid2"):
+        fig, ax = plt.subplots(figsize=(6, 6))
 
-if st.button("Show circle with grid"):
-    fig, ax = plt.subplots(figsize=(6, 6))
+        # Draw outer circle (radius 1)
+        circle = plt.Circle((0, 0), 1, edgecolor='white', facecolor='darkblue')
+        ax.add_artist(circle)
 
-    # Draw outer circle (radius 1)
-    circle = plt.Circle((0, 0), 1, edgecolor='white', facecolor='darkblue')
-    ax.add_artist(circle)
+        # Radial gridlines (concentric circles)
+        for r in [0.25, 0.5, 0.75]:
+            ring = plt.Circle((0, 0), r, edgecolor='gray', facecolor='none', linewidth=0.5)
+            ax.add_artist(ring)
 
-    # Radial gridlines (concentric circles)
-    for r in [0.25, 0.5, 0.75]:
-        ring = plt.Circle((0, 0), r, edgecolor='gray', facecolor='none', linewidth=0.5)
-        ax.add_artist(ring)
+        # Angular gridlines (spokes)
+        for angle_deg in range(0, 360, 30):
+            angle = np.deg2rad(angle_deg)
+            x = np.cos(angle)
+            y = np.sin(angle)
+            ax.plot([0, x], [0, y], color='gray', linewidth=0.5)
 
-    # Angular gridlines (spokes)
-    for angle_deg in range(0, 360, 30):
-        angle = np.deg2rad(angle_deg)
-        x = np.cos(angle)
-        y = np.sin(angle)
-        ax.plot([0, x], [0, y], color='gray', linewidth=0.5)
-
-    ax.set_aspect('equal')
-    ax.set_xlim(-1.05, 1.05)
-    ax.set_ylim(-1.05, 1.05)
-    ax.axis('off')  # hide axes frame/ticks
- #maybe adding NSEW coordinates
-    ax.text(0.5, 1.05, 'N', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-    ax.text(0.5, -0.05, 'S', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-    ax.text(1.05, 0.5, 'E', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-    ax.text(-0.05, 0.5, 'W', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-
-    st.pyplot(fig)
-
-import numpy as np
-import matplotlib.pyplot as plt
-
-st.subheader("cute little sky circle2")
-
-if st.button("Show circle with grid2"):
-    fig, ax = plt.subplots(figsize=(6, 6))
-
-    # Draw outer circle (radius 1)
-    circle = plt.Circle((0, 0), 1, edgecolor='white', facecolor='darkblue')
-    ax.add_artist(circle)
-
-    # Radial gridlines (concentric circles)
-    for r in [0.25, 0.5, 0.75]:
-        ring = plt.Circle((0, 0), r, edgecolor='gray', facecolor='none', linewidth=0.5)
-        ax.add_artist(ring)
-
-    # Angular gridlines (spokes)
-    for angle_deg in range(0, 360, 30):
-        angle = np.deg2rad(angle_deg)
-        x = np.cos(angle)
-        y = np.sin(angle)
-        ax.plot([0, x], [0, y], color='gray', linewidth=0.5)
-
-    ax.set_aspect('equal')
-    ax.set_xlim(-1.05, 1.05)
-    ax.set_ylim(-1.05, 1.05)
-    ax.axis('off')  # hide axes frame/ticks
- #maybe adding NSEW coordinates
-    ax.text(0.5, 1.05, 'N', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-    ax.text(0.5, -0.05, 'S', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-    ax.text(1.05, 0.5, 'E', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-    ax.text(-0.05, 0.5, 'W', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+        ax.set_aspect('equal')
+        ax.set_xlim(-1.05, 1.05)
+        ax.set_ylim(-1.05, 1.05)
+        ax.axis('off')  # hide axes frame/ticks
+    #maybe adding NSEW coordinates
+        ax.text(0.5, 1.05, 'N', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+        ax.text(0.5, -0.05, 'S', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+        ax.text(1.05, 0.5, 'E', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+        ax.text(-0.05, 0.5, 'W', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
     
-    st.pyplot(fig)
+        st.pyplot(fig)
+
