@@ -16,50 +16,70 @@ import litellm
 import os
 import time
 from llm_setup import llmCall
+import numpy as np
+import matplotlib.pyplot as plt
 
 # streamlit run streamlit_exoplanet.py
 st.title("Exoplanet")
+st.set_page_config(layout="wide") 
 
-option = st.selectbox(
+chatbot = llmCall()
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.header("Column 1")
+    st.write("Content for column 1")
+    option = st.selectbox(
     "Select an exoplanet:",
     ("HD 189733B", "Kepler 17B", "Kepler 20F"),
-)
+    )
+    st.write("You selected:", option)
 
-st.write("You selected:", option)
+with col2:
+    st.header("Column 2")
+    st.write("Content for column 2")
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+    else:
+    # Validate that messages are dictionaries, reset if corrupted
+        if st.session_state.messages and not isinstance(st.session_state.messages[0], dict):
+            st.session_state.messages = []
+
+        # Display history
+    for msg in st.session_state.messages:
+    # Ensure msg is a dictionary with required keys
+        if isinstance(msg, dict) and "role" in msg and "content" in msg:
+            with st.chat_message(msg["role"]):
+                st.write(msg["content"])
+
+    # Handle input
+    if prompt := st.chat_input("Type here"):
+        # Add user message
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.write(prompt)
+    
+            # Add response
+        response = chatbot.ask_llm(prompt)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        with st.chat_message("assistant"):
+            st.write(response)
+
+with col3:
+    st.header("Column 3")
+    st.write("Content for column 3")
+
+
+
 
 # Initialize
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-else:
-    # Validate that messages are dictionaries, reset if corrupted
-    if st.session_state.messages and not isinstance(st.session_state.messages[0], dict):
-        st.session_state.messages = []
 
-# Display history
-for msg in st.session_state.messages:
-    # Ensure msg is a dictionary with required keys
-    if isinstance(msg, dict) and "role" in msg and "content" in msg:
-        with st.chat_message(msg["role"]):
-            st.write(msg["content"])
-
-# Handle input
-if prompt := st.chat_input("Type here"):
-    # Add user message
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.write(prompt)
-    
-    # Add response
-    response = llmCall(prompt)
-    st.session_state.messages.append({"role": "assistant", "content": response})
-    with st.chat_message("assistant"):
-        st.write(response)
 
 #making a map of the sky and stuff
 #skyfield for pretty star data
  
-import numpy as np
-import matplotlib.pyplot as plt
+
 
 st.subheader("cute little sky circle")
 
@@ -129,5 +149,3 @@ if st.button("Show circle with grid2"):
     ax.text(-0.05, 0.5, 'W', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
     
     st.pyplot(fig)
-
-   
