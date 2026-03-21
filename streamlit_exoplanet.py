@@ -2,7 +2,7 @@
 Goals:
 
 Isabelle: Streamlit website, make AI object like Martini said to do
-Emily: Get exoplanet files, add them to streamlit to be access, make into pandas dataframe
+Emily: Get exoplanet files, add them to streamlit to be access, make into pandas dataframe, add that to exoplanet dropdown options
 Gabby: Labels on skymap, add other skymap for below the horizon. Add stars that correspond to current sky position 
 
 Next time: Combine exoplanet data to plot on skymap, show statistics of exoplanet (from pandas dataframe), get AI to give additional info about the exoplanet
