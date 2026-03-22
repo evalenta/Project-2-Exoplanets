@@ -71,6 +71,14 @@ with col3:
     st.write("Content for column 3")
     st.subheader("cute little sky circle")
 
+#setting up skyfield
+    ts = load.timescale()
+    t = ts.now()
+    with load.open(star_data.hipparcos) as f:
+        df = star_data.load_hipparcos(f)
+    earth = load('de421.bsp')['earth']
+    observer = earth + Topos('40.0 N', '83.0 W') #coords for columbus, ohio
+
     if st.button("Show circle with grid"):
         fig, ax = plt.subplots(figsize=(6, 6))
 
@@ -89,6 +97,19 @@ with col3:
             x = np.cos(angle)
             y = np.sin(angle)
             ax.plot([0, x], [0, y], color='gray', linewidth=0.5)
+            
+            astrometric = observer.at(t).observe(star_data.Star.from_dataframe(df))
+        alt, az, _ = astrometric.apparent().altaz()
+        
+        # Filter: Only stars above 0 degrees and brighter than magnitude 5.0
+        mask = (alt.degrees > 0) & (df['magnitude'] < 5.0)
+        
+        # (90 - alt)/90 scales Zenith to 0 and Horizon to 1.0
+        r_s = (90 - alt.degrees[mask]) / 90
+        # Azimuth 0 is North. Rotated to match 'N' at the top
+        theta_s = np.deg2rad(az.degrees[mask] + 90) 
+        
+        ax.scatter(-r_s * np.cos(theta_s), r_s * np.sin(theta_s), s=2, color='white', alpha=0.7)
 
         ax.set_aspect('equal')
         ax.set_xlim(-1.05, 1.05)
@@ -122,6 +143,15 @@ with col3:
             x = np.cos(angle)
             y = np.sin(angle)
             ax.plot([0, x], [0, y], color='gray', linewidth=0.5)
+
+            # Filter: Only stars below 0 degrees
+        mask_below = (alt.degrees <= 0) & (df['magnitude'] < 5.0)
+        
+        
+        r_b = (90 + alt.degrees[mask_below]) / 90
+        theta_b = np.deg2rad(az.degrees[mask_below] + 90)
+        
+        ax.scatter(-r_b * np.cos(theta_b), r_b * np.sin(theta_b), s=2, color='white', alpha=0.5)
 
         ax.set_aspect('equal')
         ax.set_xlim(-1.05, 1.05)
