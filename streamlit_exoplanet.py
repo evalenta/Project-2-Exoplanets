@@ -18,6 +18,8 @@ import time
 from llm_setup import llmCall
 import numpy as np
 import matplotlib.pyplot as plt
+from skyfield.api import load, Topos, Star
+from skyfield.data import hipparcos
 
 # streamlit run streamlit_exoplanet.py
 st.title("Exoplanet")
@@ -74,8 +76,8 @@ with col3:
 #setting up skyfield
     ts = load.timescale()
     t = ts.now()
-    with load.open(star_data.hipparcos) as f:
-        df = star_data.load_hipparcos(f)
+    with load.open(hipparcos.URL) as f:
+        df = hipparcos.load_dataframe(f)
     earth = load('de421.bsp')['earth']
     observer = earth + Topos('40.0 N', '83.0 W') #coords for columbus, ohio
 
@@ -98,7 +100,7 @@ with col3:
             y = np.sin(angle)
             ax.plot([0, x], [0, y], color='gray', linewidth=0.5)
             
-            astrometric = observer.at(t).observe(star_data.Star.from_dataframe(df))
+            astrometric = observer.at(t).observe(Star.from_dataframe(df))
         alt, az, _ = astrometric.apparent().altaz()
         
         # Filter: Only stars above 0 degrees and brighter than magnitude 5.0
