@@ -80,6 +80,8 @@ with col3:
         df = hipparcos.load_dataframe(f)
     earth = load('de421.bsp')['earth']
     observer = earth + Topos('40.0 N', '83.0 W') #coords for columbus, ohio
+    astrometric = observer.at(t).observe(Star.from_dataframe(df))
+    alt, az, _ = astrometric.apparent().altaz()
 
     if st.button("Show circle with grid"):
         fig, ax = plt.subplots(figsize=(6, 6))
@@ -99,10 +101,7 @@ with col3:
             x = np.cos(angle)
             y = np.sin(angle)
             ax.plot([0, x], [0, y], color='gray', linewidth=0.5)
-            
-            astrometric = observer.at(t).observe(Star.from_dataframe(df))
-        alt, az, _ = astrometric.apparent().altaz()
-        
+
         # Filter: Only stars above 0 degrees and brighter than magnitude 5.0
         mask = (alt.degrees > 0) & (df['magnitude'] < 5.0)
         
