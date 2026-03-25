@@ -124,7 +124,7 @@ with col3:
         vmag = df['Vmag'].fillna(df['Vmag'].mean())
 
         base_size = (8 - vmag).clip(lower=0.5) 
-        star_sizes = 15 * np.exp(-0.7 * df['Vmag'].fillna(6))
+        star_sizes = 5 * np.exp(-0.7 * df['Vmag'].fillna(6))
 
 
 
