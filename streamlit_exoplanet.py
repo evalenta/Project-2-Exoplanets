@@ -15,6 +15,8 @@ import warnings
 import litellm
 import os
 import time
+from pathlib import Path
+
 from llm_setup import llmCall
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,8 +24,27 @@ from skyfield.api import load, Topos, Star
 from skyfield.data import hipparcos
 
 # streamlit run streamlit_exoplanet.py
+st.set_page_config(layout="wide")
 st.title("Exoplanet")
-st.set_page_config(layout="wide") 
+
+
+@st.cache_resource
+def _skyfield_star_catalog_and_earth():
+    """Hipparcos loads from the internet on first run. DE421: use ./de421.bsp if present.
+
+    Skyfield's ``load('de421.bsp')`` does not read the project folder—it uses a per-user
+    cache and may download. That often works on one machine (e.g. yours) but fails on
+    Windows with strict firewalls or without a prior successful download. Putting
+    ``de421.bsp`` in the repo and loading it by path keeps everyone on the same file.
+    """
+    ts = load.timescale()
+    with load.open(hipparcos.URL) as f:
+        df = hipparcos.load_dataframe(f)
+    bsp = Path(__file__).resolve().parent / "de421.bsp"
+    ephem = str(bsp) if bsp.is_file() else "de421.bsp"
+    earth = load(ephem)["earth"]
+    return ts, df, earth
+
 
 chatbot = llmCall()
 
@@ -73,12 +94,10 @@ with col3:
     st.write("Content for column 3")
     st.subheader("cute little sky circle")
 
-#setting up skyfield
-    ts = load.timescale()
-    t = ts.now()
-    with load.open(hipparcos.URL) as f:
-        df = hipparcos.load_dataframe(f)
-    earth = load('de421.bsp')['earth']
+    # setting up skyfield (see _skyfield_star_catalog_and_earth docstring)
+    ts, df, earth = _skyfield_star_catalog_and_earth()
+    t = ts.now()st.set_page_config(layout="wide") 
+    
     observer = earth + Topos('40.0 N', '83.0 W') #coords for columbus, ohio
     astrometric = observer.at(t).observe(Star.from_dataframe(df))
     alt, az, _ = astrometric.apparent().altaz()
