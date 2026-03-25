@@ -82,6 +82,8 @@ with col3:
     observer = earth + Topos('40.0 N', '83.0 W') #coords for columbus, ohio
     astrometric = observer.at(t).observe(Star.from_dataframe(df))
     alt, az, _ = astrometric.apparent().altaz()
+    #trying things
+    t.utc_jpl()
 
     if st.button("Show circle with grid"):
         fig, ax = plt.subplots(figsize=(6, 6))
