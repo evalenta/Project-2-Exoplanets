@@ -22,7 +22,7 @@ from skyfield.api import load, Topos, Star
 from skyfield.data import hipparcos
 from astroquery.vizier import Vizier
 from astropy.coordinates import Angle
-import astropy.units as u
+
 # streamlit run streamlit_exoplanet.py
 st.title("Exoplanet")
 st.set_page_config(layout="wide") 
