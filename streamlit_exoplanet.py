@@ -131,16 +131,16 @@ with col3:
         
         fig = plt.figure(figsize=(6, 6))
 
-        ax = fig.add_subplot(111, projection="polar")
+        ax = fig.add_subplot(111, projection="polar", facecolor="darkblue")
 
         ax.set_theta_zero_location('N')
         ax.set_theta_direction(-1)
 
-        ax.scatter(theta, r, c="black", alpha=0.9, s=star_sizes)
+        ax.scatter(theta, r, c="white", alpha=0.9, s=star_sizes)
         
         ax.set_xlim(0, 2 * np.pi)
         ax.set_yticks([0, 30, 60, 90])
-        ax.set_yticklabels(['+90°', '+60°', '+30°', '0°']) 
+        ax.set_yticklabels(['+90°', '+60°', '+30°', '0°'], c="white") 
         
         st.pyplot(fig)
         
