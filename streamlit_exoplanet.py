@@ -22,6 +22,18 @@ from skyfield.api import load, Topos, Star
 from skyfield.data import hipparcos
 from astroquery.vizier import Vizier
 from astropy.coordinates import Angle
+import pandas as pd
+import csv
+
+#MIGHT NEED TO DELETE
+# Tells pandas to read the CSV file, but skips the first 97 rows since they are not part of the data that is needed and acts as headers
+# the delimeter is a comma because the data is seperated by commas and each new planet is a new row
+# uses .head() to print only the first 5 rows of data
+exoplanet = pd.read_csv('exoplanet.csv', skiprows=97, delimiter=',')
+df = pd.DataFrame(exoplanet)
+exoplanet_list = df.iloc[:,0].tolist()
+exoplanet_name = list(dict.fromkeys(exoplanet_list))
+
 
 # streamlit run streamlit_exoplanet.py
 st.title("Exoplanet")
