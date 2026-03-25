@@ -100,42 +100,50 @@ with col3:
     #astrometric = observer.at(t).observe(stars)
     ra_split, dec_split = df["ra_degrees"].str.split(expand=True).astype(float), df["dec_degrees"].str.split(expand=True)
 
-    h = ra_split[0]
-    m = ra_split[1]
-    s = ra_split[2]
+    h = ra_split[0].values
+    m = ra_split[1].values
+    s = ra_split[2].values
 
     df['RA_rad'] = (h + m/60 + s/3600) * (np.pi / 12)
 
     ra = df['RA_rad']
 
     sign = np.where(dec_split[0].str.contains('-'), -1, 1)
-    d = dec_split[0].str.replace('+', '', regex=False).str.replace('-', '', regex=False).astype(float)
-    m = dec_split[1].astype(float)
-    s = dec_split[2].astype(float)
+    d = dec_split[0].str.replace('+', '', regex=False).str.replace('-', '', regex=False).astype(float).values
+    m = dec_split[1].astype(float).values
+    s = dec_split[2].astype(float).values
 
     df['Dec_deg'] = sign * (d + (m/60) + (s/3600))
 
     dec = df['Dec_deg']
 
-    st.write(dec)
-
     if st.button("Show circle with grid"):
         
-        theta = (ra/24) * 2 * np.pi
+        theta = ra
         r = 90.0 - dec
+        vmag = df['Vmag'].fillna(df['Vmag'].mean())
+
+        base_size = (8 - vmag).clip(lower=0.5) 
+        star_sizes = 15 * np.exp(-0.7 * df['Vmag'].fillna(6))
+
+
+
         
         fig = plt.figure(figsize=(6, 6))
 
         ax = fig.add_subplot(111, projection="polar")
 
-        ax.scatter(theta, r, c="black", alpha=0.9, s=2)
         ax.set_theta_zero_location('N')
         ax.set_theta_direction(-1)
+
+        ax.scatter(theta, r, c="black", alpha=0.9, s=star_sizes)
         
-        ax.set_ylim(0, 90)
+        ax.set_xlim(0, 2 * np.pi)
         ax.set_yticks([0, 30, 60, 90])
         ax.set_yticklabels(['+90°', '+60°', '+30°', '0°']) 
+        
         st.pyplot(fig)
+        
 
         # Draw outer circle (radius 1)
         #circle = plt.Circle((0, 0), 1, edgecolor='white', facecolor='darkblue')
@@ -175,45 +183,45 @@ with col3:
 
         #st.pyplot(fig)
 
-    st.subheader("cute little sky circle2")
+    #st.subheader("cute little sky circle2")
 
-    if st.button("Show circle with grid2"):
-        fig, ax = plt.subplots(figsize=(6, 6))
+    #if st.button("Show circle with grid2"):
+        #fig, ax = plt.subplots(figsize=(6, 6))
 
         # Draw outer circle (radius 1)
-        circle = plt.Circle((0, 0), 1, edgecolor='white', facecolor='darkblue')
-        ax.add_artist(circle)
+        #circle = plt.Circle((0, 0), 1, edgecolor='white', facecolor='darkblue')
+        #ax.add_artist(circle)
 
         # Radial gridlines (concentric circles)
-        for r in [0.25, 0.5, 0.75]:
-            ring = plt.Circle((0, 0), r, edgecolor='gray', facecolor='none', linewidth=0.5)
-            ax.add_artist(ring)
+        #for r in [0.25, 0.5, 0.75]:
+            #ring = plt.Circle((0, 0), r, edgecolor='gray', facecolor='none', linewidth=0.5)
+            #ax.add_artist(ring)
 
         # Angular gridlines (spokes)
-        for angle_deg in range(0, 360, 30):
-            angle = np.deg2rad(angle_deg)
-            x = np.cos(angle)
-            y = np.sin(angle)
-            ax.plot([0, x], [0, y], color='gray', linewidth=0.5)
+        #for angle_deg in range(0, 360, 30):
+            #angle = np.deg2rad(angle_deg)
+            #x = np.cos(angle)
+            #y = np.sin(angle)
+            #ax.plot([0, x], [0, y], color='gray', linewidth=0.5)
 
             # Filter: Only stars below 0 degrees
-        mask_below = (alt.degrees <= 0) & (df['magnitude'] < 5.0)
+        #mask_below = (alt.degrees <= 0) & (df['magnitude'] < 5.0)
         
         
-        r_b = (90 + alt.degrees[mask_below]) / 90
-        theta_b = np.deg2rad(az.degrees[mask_below] + 90)
+        #r_b = (90 + alt.degrees[mask_below]) / 90
+        #theta_b = np.deg2rad(az.degrees[mask_below] + 90)
         
-        ax.scatter(-r_b * np.cos(theta_b), r_b * np.sin(theta_b), s=2, color='white', alpha=0.5)
+        #ax.scatter(-r_b * np.cos(theta_b), r_b * np.sin(theta_b), s=2, color='white', alpha=0.5)
 
-        ax.set_aspect('equal')
-        ax.set_xlim(-1.05, 1.05)
-        ax.set_ylim(-1.05, 1.05)
-        ax.axis('off')  # hide axes frame/ticks
+        #ax.set_aspect('equal')
+        #ax.set_xlim(-1.05, 1.05)
+        #ax.set_ylim(-1.05, 1.05)
+        #ax.axis('off')  # hide axes frame/ticks
     #maybe adding NSEW coordinates
-        ax.text(0.5, 1.05, 'N', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-        ax.text(0.5, -0.05, 'S', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-        ax.text(1.05, 0.5, 'E', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-        ax.text(-0.05, 0.5, 'W', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+        #ax.text(0.5, 1.05, 'N', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+        #ax.text(0.5, -0.05, 'S', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+        #ax.text(1.05, 0.5, 'E', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
+        #ax.text(-0.05, 0.5, 'W', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
     
-        st.pyplot(fig)
+        #st.pyplot(fig)
 
