@@ -96,8 +96,8 @@ with col3:
 
     # setting up skyfield (see _skyfield_star_catalog_and_earth docstring)
     ts, df, earth = _skyfield_star_catalog_and_earth()
-    t = ts.now()st.set_page_config(layout="wide") 
-    
+    t = ts.now()
+
     observer = earth + Topos('40.0 N', '83.0 W') #coords for columbus, ohio
     astrometric = observer.at(t).observe(Star.from_dataframe(df))
     alt, az, _ = astrometric.apparent().altaz()
