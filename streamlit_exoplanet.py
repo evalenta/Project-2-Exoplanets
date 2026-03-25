@@ -23,7 +23,6 @@ from skyfield.data import hipparcos
 from astroquery.vizier import Vizier
 from astropy.coordinates import Angle
 import astropy.units as u
-
 # streamlit run streamlit_exoplanet.py
 st.title("Exoplanet")
 st.set_page_config(layout="wide") 
@@ -36,8 +35,8 @@ with col1:
     st.header("Column 1")
     st.write("Content for column 1")
     option = st.selectbox(
-    "Select an exoplanet:",
-    ("HD 189733B", "Kepler 17B", "Kepler 20F"),
+    label= "Select an exoplanet:",
+    options = exoplanet_name
     )
     st.write("You selected:", option)
 
