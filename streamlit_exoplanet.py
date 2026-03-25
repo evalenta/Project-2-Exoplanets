@@ -128,7 +128,7 @@ with col3:
 
         ax = fig.add_subplot(111, projection="polar")
 
-        ax.scatter(theta, r, c="blue", alpha=0.7)
+        ax.scatter(theta, r, c="black", alpha=0.9, s=2)
         ax.set_theta_zero_location('N')
         ax.set_theta_direction(-1)
         
