@@ -30,8 +30,9 @@ import csv
 # the delimeter is a comma because the data is seperated by commas and each new planet is a new row
 # uses .head() to print only the first 5 rows of data
 exoplanet = pd.read_csv('exoplanet.csv', skiprows=97, delimiter=',')
-df = pd.DataFrame(exoplanet)
-exoplanet_list = df.iloc[:,0].tolist()
+#changed df to df_exo to avoid confusion with df later in the code
+df_exo = pd.DataFrame(exoplanet)
+exoplanet_list = df_exo.iloc[:,0].tolist()
 exoplanet_name = list(dict.fromkeys(exoplanet_list))
 
 
@@ -75,9 +76,20 @@ with col2:
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.write(prompt)
-    
-            # Add response
-        response = chatbot.ask_llm(prompt)
+        # Add response
+        # Getting info on selected exoplanet from csv file and converting to string.
+        planet_data_row = df_exo[df_exo.iloc[:, 0] == option].to_string()
+        full_prompt = f"""
+        User is asking about the planet: {option}.
+        Here is the data on the exoplanet from the CSV file:
+        {planet_data_row}
+
+        Question: {prompt}
+
+        Please answer the question using the data above.
+        Then, provide a JSON block with: {{ "name": "{option}", "type": "...", "distance": "..." }}
+        """
+        response = chatbot.ask_llm(full_prompt)
         st.session_state.messages.append({"role": "assistant", "content": response})
         with st.chat_message("assistant"):
             st.write(response)
