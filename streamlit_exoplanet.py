@@ -118,7 +118,7 @@ with col2:
 with col3:
     st.header("Sky Map")
     st.write("Find the exoplanet on the sky map")
-    st.subheader("cute little sky circle")
+    st.subheader("RA and Dec (with brightest stars in sky for reference)")
 
 #setting up skyfield
     ts = load.timescale()
