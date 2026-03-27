@@ -181,7 +181,7 @@ with col3:
         ax.set_theta_direction(-1)
 
         ax.scatter(theta, r, c="white", alpha=0.9, s=star_sizes)
-        ax.scatter(exo_ra, exo_dec, color='red', s=150, zorder=5,
+        ax.scatter(exo_ra, exo_dec, color='red', s=50, zorder=5,
            marker='o', edgecolors='darkred', linewidth=2)
         
         ax.set_xlim(0, 2 * np.pi)
