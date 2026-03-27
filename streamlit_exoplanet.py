@@ -54,8 +54,24 @@ with col1:
     st.write("You selected:", option)
 
 with col2:
+
+    def change_chatbot_style():
+    # Set style of chat input so that it shows up at the bottom of the column
+        chat_input_style = f"""
+        <style>
+            .stChatInput {{
+            position: fixed;
+            bottom: 3rem;
+            }}
+        </style>
+        """
+        st.markdown(chat_input_style, unsafe_allow_html=True)
+
     st.header("Column 2")
     st.write("Content for column 2")
+
+    change_chatbot_style()
+
     if "messages" not in st.session_state:
         st.session_state.messages = []
     else:
