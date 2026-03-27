@@ -99,11 +99,11 @@ with col2:
             st.write(prompt)
         # Add response
         # Getting info on selected exoplanet from csv file and converting to string.
-        planet_data_row = df_exo[df_exo.iloc[:, 0] == option].to_string()
+        data = df_exo[df_exo.iloc[:, 0] == option].to_string()
         full_prompt = f"""
         User is asking about the planet: {option}.
         Here is the data on the exoplanet from the CSV file:
-        {planet_data_row}
+        {data}
 
         Question: {prompt}
 
