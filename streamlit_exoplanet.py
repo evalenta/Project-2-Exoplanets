@@ -67,8 +67,8 @@ with col2:
         """
         st.markdown(chat_input_style, unsafe_allow_html=True)
 
-    st.header("Column 2")
-    st.write("Content for column 2")
+    st.header("Ai Chat Box")
+    st.write("Ask AI a question about the selected exoplanet")
 
     change_chatbot_style()
 
@@ -111,8 +111,8 @@ with col2:
             st.write(response)
 
 with col3:
-    st.header("Column 3")
-    st.write("Content for column 3")
+    st.header("Sky Map")
+    st.write("Find the exoplanet on the sky map")
     st.subheader("cute little sky circle")
 
 #setting up skyfield
