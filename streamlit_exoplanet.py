@@ -161,34 +161,33 @@ with col3:
 
     dec = df['Dec_deg']
 
-    if st.button("Show circle with grid"):
         
-        theta = ra
-        r = 90.0 - dec
-        vmag = df['Vmag'].fillna(df['Vmag'].mean())
+    theta = ra
+    r = 90.0 - dec
+    vmag = df['Vmag'].fillna(df['Vmag'].mean())
 
-        base_size = (8 - vmag).clip(lower=0.5) 
-        star_sizes = 5 * np.exp(-0.7 * df['Vmag'].fillna(6))
+    base_size = (8 - vmag).clip(lower=0.5) 
+    star_sizes = 5 * np.exp(-0.7 * df['Vmag'].fillna(6))
         
-        exo_ra = planet_data_row["ra"]
-        exo_dec = planet_data_row["dec"]
+    exo_ra = planet_data_row["ra"]
+    exo_dec = planet_data_row["dec"]
         
-        fig = plt.figure(figsize=(6, 6))
+    fig = plt.figure(figsize=(6, 6))
 
-        ax = fig.add_subplot(111, projection="polar", facecolor="darkblue")
+    ax = fig.add_subplot(111, projection="polar", facecolor="darkblue")
 
-        ax.set_theta_zero_location('N')
-        ax.set_theta_direction(-1)
+    ax.set_theta_zero_location('N')
+    ax.set_theta_direction(-1)
 
-        ax.scatter(theta, r, c="white", alpha=0.9, s=star_sizes)
-        ax.scatter(exo_ra, exo_dec, color='red', s=50, zorder=5,
-           marker='o', edgecolors='darkred', linewidth=2)
+    ax.scatter(theta, r, c="white", alpha=0.9, s=star_sizes)
+    ax.scatter(exo_ra, exo_dec, color='red', s=50, zorder=5,
+        marker='o', edgecolors='darkred', linewidth=2)
         
-        ax.set_xlim(0, 2 * np.pi)
-        ax.set_yticks([0, 30, 60, 90])
-        ax.set_yticklabels(['+90°', '+60°', '+30°', '0°'], c="white") 
+    ax.set_xlim(0, 2 * np.pi)
+    ax.set_yticks([0, 30, 60, 90])
+    ax.set_yticklabels(['+90°', '+60°', '+30°', '0°'], c="white") 
         
-        st.pyplot(fig)
+    st.pyplot(fig)
         
 
         # Draw outer circle (radius 1)
