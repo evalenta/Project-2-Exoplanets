@@ -37,7 +37,7 @@ exoplanet_name = list(dict.fromkeys(exoplanet_list))
 
 
 # streamlit run streamlit_exoplanet.py
-st.title("Exoplanet")
+st.title("Exoplanet Explorer")
 st.set_page_config(layout="wide") 
 
 chatbot = llmCall()
@@ -45,8 +45,8 @@ chatbot = llmCall()
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.header("Column 1")
-    st.write("Content for column 1")
+    st.header("Exoplanet Selection")
+    st.write("Select an exoplanet from the list below to start your journey!")
     option = st.selectbox(
     label= "Select an exoplanet:",
     options = exoplanet_name
@@ -67,7 +67,7 @@ with col2:
         """
         st.markdown(chat_input_style, unsafe_allow_html=True)
 
-    st.header("Ai Chat Box")
+    st.header("Ai Chat Bot")
     st.write("Ask AI a question about the selected exoplanet")
 
     change_chatbot_style()
