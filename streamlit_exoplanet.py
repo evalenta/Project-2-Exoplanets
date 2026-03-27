@@ -37,6 +37,9 @@ df_exo = exoplanet.set_index("pl_name")
 filtered_exo = dict.fromkeys(df_exo.index)
 
 
+#df_exo.index = df_exo.index.drop_duplicates(keep='first')
+
+
 
 
 # streamlit run streamlit_exoplanet.py
@@ -52,7 +55,7 @@ with col1:
     st.write("Select an exoplanet from the list below to start your journey!")
     option = st.selectbox(
     label= "Select an exoplanet:",
-    options = df_exo.index
+    options = filtered_exo
     )
     st.write("You selected:", option)
     planet_data_row = df_exo.loc[option]
