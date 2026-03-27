@@ -29,11 +29,14 @@ import csv
 # Tells pandas to read the CSV file, but skips the first 97 rows since they are not part of the data that is needed and acts as headers
 # the delimeter is a comma because the data is seperated by commas and each new planet is a new row
 # uses .head() to print only the first 5 rows of data
-exoplanet = pd.read_csv('exoplanet.csv', skiprows=97, delimiter=',')
+exoplanet = pd.read_csv('exoplanet.csv', skiprows=96, delimiter=',')
 #changed df to df_exo to avoid confusion with df later in the code
-df_exo = pd.DataFrame(exoplanet)
-exoplanet_list = df_exo.iloc[:,0].tolist()
-exoplanet_name = list(dict.fromkeys(exoplanet_list))
+
+
+df_exo = exoplanet.set_index("pl_name")
+filtered_exo = dict.fromkeys(df_exo.index)
+
+
 
 
 # streamlit run streamlit_exoplanet.py
@@ -49,9 +52,11 @@ with col1:
     st.write("Select an exoplanet from the list below to start your journey!")
     option = st.selectbox(
     label= "Select an exoplanet:",
-    options = exoplanet_name
+    options = df_exo.index
     )
     st.write("You selected:", option)
+    planet_data_row = df_exo.loc[option]
+    st.write(planet_data_row)
 
 with col2:
 
@@ -164,9 +169,8 @@ with col3:
 
         base_size = (8 - vmag).clip(lower=0.5) 
         star_sizes = 5 * np.exp(-0.7 * df['Vmag'].fillna(6))
-
-
-
+        
+        
         
         fig = plt.figure(figsize=(6, 6))
 
@@ -176,6 +180,9 @@ with col3:
         ax.set_theta_direction(-1)
 
         ax.scatter(theta, r, c="white", alpha=0.9, s=star_sizes)
+        #ax.scatter(df_exo[option][], min_cost, color='red', s=150, zorder=5,
+           #marker='o', edgecolors='darkred', linewidth=2,
+           #label=f'Minimum at {optimal_mean:.3f} mag')
         
         ax.set_xlim(0, 2 * np.pi)
         ax.set_yticks([0, 30, 60, 90])
