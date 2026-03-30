@@ -24,6 +24,9 @@ from astroquery.vizier import Vizier
 from astropy.coordinates import Angle
 import pandas as pd
 import csv
+from astropy.coordinates import SkyCoord
+from astropy import units as u
+
 
 #MIGHT NEED TO DELETE
 # Tells pandas to read the CSV file, but skips the first 97 rows since they are not part of the data that is needed and acts as headers
@@ -233,7 +236,15 @@ with col3:
     ax.set_yticklabels(['+90°', '+60°', '+30°', '0°'], c="white") 
         
     st.pyplot(fig)
-        
+    
+    exo_coord = SkyCoord(exo_ra, exo_dec, unit= u.degree)
+    altitude = exo_coord.alt(t)
+    azimuth = exo_coord.az(t)
+    
+
+
+
+
 
         # Draw outer circle (radius 1)
         #circle = plt.Circle((0, 0), 1, edgecolor='white', facecolor='darkblue')
