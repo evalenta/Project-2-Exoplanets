@@ -37,11 +37,11 @@ images = pd.read_csv('planet_images.csv', delimiter=',')
 df_exo = exoplanet.set_index("pl_name")
 filtered_exo = dict.fromkeys(df_exo.index)
 
-neptunelike_planet = "neptunelike_planet.jpg"
-superearth_planet = "superearth_planet.jpg"
-terrestrial_planet = "terrestrial_planet.jpg"
-unkown_planet = "unkown_planet.jpg"
-gasgiant = "gasgiant.jpeg"
+neptunelike_planet = 'neptunelike_planet.jpg'
+superearth_planet = 'superearth_planet.jpg'
+terrestrial_planet = 'terrestrial_planet.jpg'
+unkown_planet = 'unkown_planet.jpg'
+gasgiant = 'gasgiant.jpeg'
 
 planet_type = [neptunelike_planet, superearth_planet, terrestrial_planet, unkown_planet, gasgiant]
 
@@ -117,11 +117,11 @@ with col2:
         Here is the data on the exoplanet from the CSV file:
         {data}
         Here is an image of the exoplanet: {planet_type}
-        if the exoplanet is a gas giant, here is an image of a gas giant: {gasgiant}
-        if the exoplanet is a neptunelike planet, here is an image of a neptunelike planet: {neptunelike_planet}
-        if the exoplanet is a superearth planet, here is an image of a superearth planet: {superearth_planet}
-        if the exoplanet is an unknown planet, here is an image of an unknown planet: {unkown_planet}
-        if the exoplanet is a terrestrial planet, here is an image of a terrestrial planet: {terrestrial_planet}
+        if the exoplanet is a gas giant, here is an image of a gas giant: st.image({gasgiant})
+        if the exoplanet is a neptunelike planet, here is an image of a neptunelike planet: st.image({neptunelike_planet})
+        if the exoplanet is a superearth planet, here is an image of a superearth planet: st.image({superearth_planet})
+        if the exoplanet is an unknown planet, here is an image of an unknown planet: st.image({unkown_planet})
+        if the exoplanet is a terrestrial planet, here is an image of a terrestrial planet: st.image({terrestrial_planet})
 
         Question: {prompt}
 
