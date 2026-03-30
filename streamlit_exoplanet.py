@@ -37,11 +37,11 @@ images = pd.read_csv('planet_images.csv', delimiter=',')
 df_exo = exoplanet.set_index("pl_name")
 filtered_exo = dict.fromkeys(df_exo.index)
 
-neptunelike_planet = 'neptunelike_planet.jpg'
-superearth_planet = 'superearth_planet.jpg'
-terrestrial_planet = 'terrestrial_planet.jpg'
-unkown_planet = 'unkown_planet.jpg'
-gasgiant = 'gasgiant.jpeg'
+neptunelike_planet = st.image(images[1])
+superearth_planet = st.image(images[2])
+terrestrial_planet = st.image(images[3])
+unkown_planet = st.image(images[4])
+gasgiant = st.image(images[0])
 
 planet_type = [neptunelike_planet, superearth_planet, terrestrial_planet, unkown_planet, gasgiant]
 
