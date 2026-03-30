@@ -1,8 +1,8 @@
 """
 Goals:
 
-Isabelle: Streamlit website, make AI object like Martini said to do
-Emily: Get exoplanet files, add them to streamlit to be access, make into pandas dataframe, add that to exoplanet dropdown options
+Isabelle: Streamlit website, make AI object like Martini said to do, connect AI to exoplanet choice, make skymap alt az instead of ra and dec
+Emily: Get exoplanet files, add them to streamlit to be access, make into pandas dataframe, add that to exoplanet dropdown options, show "image" of exoplanet
 Gabby: Labels on skymap, add other skymap for below the horizon. Add stars that correspond to current sky position 
 new gabby goal; get llm to take info emily gets on exoplanets, have llm give additional info about the exoplanet mayhaps perhaps maybe
 Next time: Combine exoplanet data to plot on skymap, show statistics of exoplanet (from pandas dataframe), get AI to give additional info about the exoplanet
@@ -32,15 +32,15 @@ import csv
 exoplanet = pd.read_csv('exoplanet.csv', skiprows=96, delimiter=',')
 #changed df to df_exo to avoid confusion with df later in the code
 
-images = pd.read_csv('planet_images.csv', delimiter=',')
+# images = pd.read_csv('planet_images.csv', delimiter=',')
 
 df_exo = exoplanet.set_index("pl_name")
 filtered_exo = dict.fromkeys(df_exo.index)
 
-neptunelike_planet = 'neptunelike_planet.jpg'
-superearth_planet = 'superearth_planet.jpg'
-terrestrial_planet = 'terrestrial_planet.jpg'
-unkown_planet = 'unkown_planet.jpg'
+neptunelike_planet = 'neptunelike_planet.jpeg'
+superearth_planet = 'superearth_planet.jpeg'
+terrestrial_planet = 'terrestrial_planet.jpeg'
+unkown_planet = 'unkown_planet.jpeg'
 gasgiant = 'gasgiant.jpeg'
 
 planet_type = [neptunelike_planet, superearth_planet, terrestrial_planet, unkown_planet, gasgiant]
@@ -67,8 +67,40 @@ with col1:
     options = filtered_exo
     )
     st.write("You selected:", option)
+
     planet_data_row = df_exo.loc[option]
+    data = planet_data_row
+
+    assignment = f"""
+    You will be given a specific exoplanet with information from a csv file. Using information from 
+    research papers or websites online you can find, respond ONLY with the one of the following options 
+    that best labels the exoplanet being asked by the user. The following options you have are below 
+    and separated by commas:
+
+    neptunelike_planet, superearth_planet, terrestrial_planet, unkown_planet, gasgiant
+
+    Do not respond with any other information except for ONE of these labels.
+
+    User is asking about the planet: {option}.
+    Here is the data on the exoplanet from the CSV file: {data}"""
+
+    exoplanet_type = chatbot.ask_llm(assignment)
+    st.write(f"This planet is a {exoplanet_type}.\n The following is an example of what a {exoplanet_type} would look like.")
+    if exoplanet_type == "neptunelike_planet":
+        st.image('neptunelike_planet.jpg')
+    elif exoplanet_type == "superearth_planet":
+        st.image('superearth_planet.jpg')
+    elif exoplanet_type == "terrestrial_planet":
+        st.image('terrestrial_planet.jpg')
+    elif exoplanet_type == "unknown_planet":
+        st.image('unknown_planet.jpg')
+    elif exoplanet_type == "gasgiant":
+        st.image('gasgiant.jpeg')
+
+    st.write(f"Here is observation data of {option}:")
     st.write(planet_data_row)
+
+# test
 
 with col2:
 

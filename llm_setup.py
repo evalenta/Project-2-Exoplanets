@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import litellm
 
 class llmCall:
-    def __init__(self, model="openai/GPT-4.1-mini", temperature=0.2, max_tokens=1000):
+    def __init__(self, model="gemini/gemini-2.5-pro", temperature=0.2, max_tokens=1000):
         """Initialize the chat agent and load API key"""
         # 1. Load variables from .env into the system environment
         load_dotenv()
