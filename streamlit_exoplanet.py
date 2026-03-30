@@ -148,16 +148,11 @@ with col2:
         User is asking about the planet: {option}.
         Here is the data on the exoplanet from the CSV file:
         {data}
-        Here is an image of the exoplanet: {planet_type}
-        if the exoplanet is a gas giant, here is an image of a gas giant: st.image({gasgiant})
-        if the exoplanet is a neptunelike planet, here is an image of a neptunelike planet: st.image({neptunelike_planet})
-        if the exoplanet is a superearth planet, here is an image of a superearth planet: st.image({superearth_planet})
-        if the exoplanet is an unknown planet, here is an image of an unknown planet: st.image({unkown_planet})
-        if the exoplanet is a terrestrial planet, here is an image of a terrestrial planet: st.image({terrestrial_planet})
+        
 
         Question: {prompt}
 
-        Please answer the question using the data above.
+        Please answer the question using the data above and any information from research papers and websites found online.
         Then, provide a JSON block with: {{ "name": "{option}", "type": "...", "distance": "..." }}
         """
         response = chatbot.ask_llm(full_prompt)
