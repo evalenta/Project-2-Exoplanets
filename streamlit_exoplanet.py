@@ -32,6 +32,7 @@ import csv
 exoplanet = pd.read_csv('exoplanet.csv', skiprows=96, delimiter=',')
 #changed df to df_exo to avoid confusion with df later in the code
 
+images = pd.read_csv('planet_images.csv', delimiter=',')
 
 df_exo = exoplanet.set_index("pl_name")
 filtered_exo = dict.fromkeys(df_exo.index)
@@ -107,6 +108,7 @@ with col2:
         User is asking about the planet: {option}.
         Here is the data on the exoplanet from the CSV file:
         {data}
+        Here is an image of the exoplanet: {images[option]}
 
         Question: {prompt}
 
