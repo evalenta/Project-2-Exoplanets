@@ -257,6 +257,15 @@ with col3:
     alt_deg = alt.degrees
     az_deg = az.degrees
 
+    # create exoplanet "star" object 
+    exo = Star(ra_hours=exo_ra/15.0, dec_degrees=exo_dec)
+    exo_astrometric = observer.at(t).observe(exo)
+    exo_apparent = exo_astrometric.apparent()
+    exo_alt, exo_az, _ = exo_apparent.altaz()
+
+    exo_theta = np.deg2rad(exo_az.degrees)
+    exo_r = 90.0 - exo_alt.degrees
+
     # convert az to radians for polar plot
     theta2 = np.deg2rad(az_deg)
     # put zenith at the center
@@ -276,6 +285,8 @@ with col3:
 
     # plot stars
     ax2.scatter(theta2, r2, s=star_sizes2, c="white")
+    ax2.scatter(exo_theta, exo_r, color='red', s=50, zorder=5,
+        marker='o', edgecolors='darkred', linewidth=2)
 
     ax2.set_xlim(0, 2 * np.pi)
     ax2.set_yticks([0, 30, 60, 90, 120, 150, 180])
