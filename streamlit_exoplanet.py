@@ -1,15 +1,3 @@
-"""
-Goals:
-
-Isabelle: Streamlit website, make AI object like Martini said to do, connect AI to exoplanet choice, make skymap alt az instead of ra and dec
-Emily: Get exoplanet files, add them to streamlit to be access, make into pandas dataframe, add that to exoplanet dropdown options, show "image" of exoplanet
-Gabby: Labels on skymap, add other skymap for below the horizon. Add stars that correspond to current sky position 
-new gabby goal; get llm to take info emily gets on exoplanets, have llm give additional info about the exoplanet mayhaps perhaps maybe
-Next time: Combine exoplanet data to plot on skymap, show statistics of exoplanet (from pandas dataframe), get AI to give additional info about the exoplanet
-"""
-
-
-
 import streamlit as st
 import warnings
 import litellm
@@ -28,15 +16,12 @@ import csv
 from astropy.coordinates import SkyCoord
 from astropy import units as u
 
-
-#MIGHT NEED TO DELETE
 # Tells pandas to read the CSV file, but skips the first 97 rows since they are not part of the data that is needed and acts as headers
 # the delimeter is a comma because the data is seperated by commas and each new planet is a new row
 # uses .head() to print only the first 5 rows of data
 exoplanet = pd.read_csv('exoplanet.csv', skiprows=96, delimiter=',')
 #changed df to df_exo to avoid confusion with df later in the code
 
-# images = pd.read_csv('planet_images.csv', delimiter=',')
 
 df_exo = exoplanet.set_index("pl_name")
 filtered_exo = dict.fromkeys(df_exo.index)
@@ -48,12 +33,6 @@ unkown_planet = 'unkown_planet.jpeg'
 gasgiant = 'gasgiant.jpeg'
 
 planet_type = [neptunelike_planet, superearth_planet, terrestrial_planet, unkown_planet, gasgiant]
-
-
-#df_exo.index = df_exo.index.drop_duplicates(keep='first')
-
-
-
 
 # streamlit run streamlit_exoplanet.py
 st.title("Exoplanet Explorer")
@@ -199,6 +178,7 @@ with col3:
     m = ra_split[1].values
     s = ra_split[2].values
 
+    # convert from sexagesimal to degrees
     df['RA_rad'] = (h + m/60 + s/3600) * (np.pi / 12)
 
     ra = df['RA_rad']
