@@ -252,8 +252,8 @@ with col3:
         marker='o', edgecolors='darkred', linewidth=2)
     
     ax.set_xlim(0, 2 * np.pi)
-    ax.set_yticks([0, 30, 60, 90])
-    ax.set_yticklabels(['+90°', '+60°', '+30°', '0°', '-30°', '-60°', '-90°',], c="white")
+    ax.set_yticks([0, 30, 60, 90, 120, 150, 180])
+    ax.set_yticklabels(['+90°', '+60°', '+30°', '0°', '-30°', '-60°', '-90°'], c="white")
     ax.tick_params(colors="white") 
     st.pyplot(fig)
     
@@ -282,8 +282,8 @@ with col3:
     ax2.scatter(theta2, r2, s=star_sizes2, c="white")
 
     ax2.set_xlim(0, 2 * np.pi)
-    ax2.set_yticks([0, 30, 60, 90])
-    ax2.set_yticklabels(['+90°', '+60°', '+30°', '0°', '-30°', '-60°', '-90°',], color="white")
+    ax2.set_yticks([0, 30, 60, 90, 120, 150, 180])
+    ax2.set_yticklabels(['+90°', '+60°', '+30°', '0°', '-30°', '-60°', '-90°'], color="white")
     ax2.tick_params(colors="white")
 
     ax2.set_title("Stars above horizon (Alt/Az)", color="white", pad=12)
