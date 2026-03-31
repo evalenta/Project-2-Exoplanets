@@ -246,6 +246,7 @@ with col3:
 
 
 
+
         # Draw outer circle (radius 1)
         #circle = plt.Circle((0, 0), 1, edgecolor='white', facecolor='darkblue')
         #ax.add_artist(circle)
