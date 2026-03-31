@@ -151,12 +151,11 @@ with col2:
         User is asking about the planet: {option}.
         Here is the data on the exoplanet from the CSV file:
         {data}
-        
 
         Question: {prompt}
 
         Please answer the question using the data above and any information from research papers and websites found online.
-        Then, provide a JSON block with: {{ "name": "{option}", "type": "...", "distance": "..." }}
+        Then, provide a JSON block with: {{ "Name": "{option}", "Exoplanet type": "...", "Distance from Earth": "...", "Discovery year": "...", "Discovery Method": "...", "RA": "...", "Dec": "..." }}
         """
         response = chatbot.ask_llm(full_prompt)
         st.session_state.messages.append({"role": "assistant", "content": response})
