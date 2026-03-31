@@ -20,6 +20,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from skyfield.api import load, Topos, Star
 from skyfield.data import hipparcos
+from skyfield.api import wgs84
 from astroquery.vizier import Vizier
 from astropy.coordinates import Angle
 import pandas as pd
@@ -108,7 +109,9 @@ with col1:
 with col2:
 
     def change_chatbot_style():
-    # Set style of chat input so that it shows up at the bottom of the column
+        """
+        Set style of chat input so that it shows up at the bottom of the column. 
+        """
         chat_input_style = f"""
         <style>
             .stChatInput {{
@@ -170,7 +173,8 @@ with col3:
 #setting up skyfield
     ts = load.timescale()
     t = ts.now()
-    earth = load('de421.bsp')['earth']
+    eph = load('de421.bsp')
+    earth = eph['earth']
 
     vizier = Vizier(columns=["*", 'RA2000', 'DE2000'], row_limit=-1)
     catalogs = vizier.get_catalogs("V/53A/catalog")
@@ -181,12 +185,14 @@ with col3:
         "DE2000": "dec_degrees"
     })
 
-    #st.write(df["ra_degrees"])
-    
-    #stars = Star.from_dataframe(df)
+    columbus_lat = 39.9612   # degrees North
+    columbus_lon = -83.0003  # degrees East (negative = West)
+    columbus_elev = 260      # meters above sea level
 
-    #observer = earth + Topos('40.0 N', '83.0 W') #coords for columbus, ohio
-    #astrometric = observer.at(t).observe(stars)
+    columbus_topos = wgs84.latlon(columbus_lat, columbus_lon, elevation_m=columbus_elev)
+
+    observer = earth + columbus_topos
+
     ra_split, dec_split = df["ra_degrees"].str.split(expand=True).astype(float), df["dec_degrees"].str.split(expand=True)
 
     h = ra_split[0].values
@@ -199,13 +205,21 @@ with col3:
 
     sign = np.where(dec_split[0].str.contains('-'), -1, 1)
     d = dec_split[0].str.replace('+', '', regex=False).str.replace('-', '', regex=False).astype(float).values
-    m = dec_split[1].astype(float).values
-    s = dec_split[2].astype(float).values
+    min = dec_split[1].astype(float).values
+    sec = dec_split[2].astype(float).values
 
-    df['Dec_deg'] = sign * (d + (m/60) + (s/3600))
+    df['Dec_deg'] = sign * (d + (min/60) + (sec/3600))
 
     dec = df['Dec_deg']
 
+    stars = Star(ra_hours=(h, m, s), dec_degrees=dec)
+
+    astrometric = observer.at(t).observe(stars)
+    apparent = astrometric.apparent()
+    alt, az, distance = apparent.altaz()
+
+    df["alt_deg"] = alt.degrees
+    df["az_deg"] = az.degrees
         
     theta = ra
     r = 90.0 - dec
@@ -234,93 +248,30 @@ with col3:
         
     st.pyplot(fig)
     
-    exo_coord = SkyCoord(exo_ra, exo_dec, unit= u.degree)
-    altitude = exo_coord.alt(t)
-    azimuth = exo_coord.az(t)
+    alt_deg = alt.degrees
+    az_deg = az.degrees
+
+    theta2 = np.deg2rad(az_deg)
+    r2 = 90.0 - alt_deg
     
+    vmag2 = df['Vmag'].fillna(df['Vmag'].mean())
+    base_size2 = (8 - vmag2).clip(lower=0.5) 
+    star_sizes2 = 5 * np.exp(-0.7 * df['Vmag'].fillna(6))
 
+    fig2 = plt.figure(figsize=(6,6))
+    ax2 = fig2.add_subplot(111, projection="polar", facecolor="midnightblue")
+    ax2.set_theta_zero_location("N")
+    ax2.set_theta_direction(-1)
 
+    ax2.scatter(theta2, r2, s=star_sizes2, c="white")
 
+    ax2.set_xlim(0, 2 * np.pi)
+    ax2.set_rticks([0, 30, 60, 90])
+    ax2.set_yticklabels(["Zenith", "60°", "30°", "Horizon"], color="white")
+    ax2.tick_params(colors="white")
 
+    ax2.set_title("Stars above horizon (Alt/Az)", color="white", pad=12)
 
+    st.subheader("Alt and Az (Observing from Columbus, Ohio)")
 
-        # Draw outer circle (radius 1)
-        #circle = plt.Circle((0, 0), 1, edgecolor='white', facecolor='darkblue')
-        #ax.add_artist(circle)
-
-        # Radial gridlines (concentric circles)
-        #for r in [0.25, 0.5, 0.75]:
-            #ring = plt.Circle((0, 0), r, edgecolor='gray', facecolor='none', linewidth=0.5)
-            #ax.add_artist(ring)
-
-        # Angular gridlines (spokes)
-        #for angle_deg in range(0, 360, 30):
-            #angle = np.deg2rad(angle_deg)
-            #x = np.cos(angle)
-            #y = np.sin(angle)
-            #ax.plot([0, x], [0, y], color='gray', linewidth=0.5)
-
-        # Filter: Only stars above 0 degrees and brighter than magnitude 5.0
-        #mask = (alt.degrees > 0) & (df['magnitude'] < 5.0)
-        
-        # (90 - alt)/90 scales Zenith to 0 and Horizon to 1.0
-        #r_s = (90 - alt.degrees[mask]) / 90
-        # Azimuth 0 is North. Rotated to match 'N' at the top
-        #theta_s = np.deg2rad(az.degrees[mask] + 90) 
-        
-        #ax.scatter(-r_s * np.cos(theta_s), r_s * np.sin(theta_s), s=2, color='white', alpha=0.7)
-
-        #ax.set_aspect('equal')
-        #ax.set_xlim(-1.05, 1.05)
-        #ax.set_ylim(-1.05, 1.05)
-        #ax.axis('off')  # hide axes frame/ticks
-    #maybe adding NSEW coordinates
-        #ax.text(0.5, 1.05, 'N', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-        #ax.text(0.5, -0.05, 'S', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-        #ax.text(1.05, 0.5, 'E', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-        #ax.text(-0.05, 0.5, 'W', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-
-        #st.pyplot(fig)
-
-    #st.subheader("cute little sky circle2")
-
-    #if st.button("Show circle with grid2"):
-        #fig, ax = plt.subplots(figsize=(6, 6))
-
-        # Draw outer circle (radius 1)
-        #circle = plt.Circle((0, 0), 1, edgecolor='white', facecolor='darkblue')
-        #ax.add_artist(circle)
-
-        # Radial gridlines (concentric circles)
-        #for r in [0.25, 0.5, 0.75]:
-            #ring = plt.Circle((0, 0), r, edgecolor='gray', facecolor='none', linewidth=0.5)
-            #ax.add_artist(ring)
-
-        # Angular gridlines (spokes)
-        #for angle_deg in range(0, 360, 30):
-            #angle = np.deg2rad(angle_deg)
-            #x = np.cos(angle)
-            #y = np.sin(angle)
-            #ax.plot([0, x], [0, y], color='gray', linewidth=0.5)
-
-            # Filter: Only stars below 0 degrees
-        #mask_below = (alt.degrees <= 0) & (df['magnitude'] < 5.0)
-        
-        
-        #r_b = (90 + alt.degrees[mask_below]) / 90
-        #theta_b = np.deg2rad(az.degrees[mask_below] + 90)
-        
-        #ax.scatter(-r_b * np.cos(theta_b), r_b * np.sin(theta_b), s=2, color='white', alpha=0.5)
-
-        #ax.set_aspect('equal')
-        #ax.set_xlim(-1.05, 1.05)
-        #ax.set_ylim(-1.05, 1.05)
-        #ax.axis('off')  # hide axes frame/ticks
-    #maybe adding NSEW coordinates
-        #ax.text(0.5, 1.05, 'N', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-        #ax.text(0.5, -0.05, 'S', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-        #ax.text(1.05, 0.5, 'E', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-        #ax.text(-0.05, 0.5, 'W', transform=ax.transAxes, ha='center', va='bottom', fontsize=15, color='red')
-    
-        #st.pyplot(fig)
-
+    st.pyplot(fig2)
