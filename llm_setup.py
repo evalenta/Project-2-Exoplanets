@@ -5,15 +5,15 @@ import litellm
 class llmCall:
     def __init__(self, model="gemini/gemini-2.5-pro", temperature=0.2, max_tokens=1000):
         """Initialize the chat agent and load API key"""
-        # 1. Load variables from .env into the system environment
+        # Load variables from .env into the system environment
         load_dotenv()
         
-        # 2. Robustness Check: Ensure the key actually exists
+        # Ensure the API key exists
         self.api_key = os.getenv("ASTRO1221_API_KEY")
         if not self.api_key:
             raise ValueError("API Key not found! Did you forget your .env file?")
         
-        # 3. State management
+        # State management
         self.model = model
         self.history = [
             {"role": "system", "content": "You are a helpful astronomy research assistant."}
