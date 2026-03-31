@@ -233,6 +233,9 @@ with col3:
     # get the ra and dec of the selected exoplanet
     exo_ra = planet_data_row["ra"]
     exo_dec = planet_data_row["dec"]
+
+    exo_theta = np.deg2rad(exo_ra)
+    exo_r = 90.0 - exo_dec
     
     fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(111, projection="polar", facecolor="darkblue")
@@ -244,7 +247,7 @@ with col3:
     # plot the stars
     ax.scatter(theta, r, c="white", alpha=0.9, s=star_sizes)
     # plot the selected exoplanet
-    ax.scatter(exo_ra, exo_dec, color='red', s=50, zorder=5,
+    ax.scatter(exo_theta, exo_r, color='red', s=50, zorder=5,
         marker='o', edgecolors='darkred', linewidth=2)
     
     ax.set_xlim(0, 2 * np.pi)
@@ -263,8 +266,8 @@ with col3:
     exo_apparent = exo_astrometric.apparent()
     exo_alt, exo_az, _ = exo_apparent.altaz()
 
-    exo_theta = np.deg2rad(exo_az.degrees)
-    exo_r = 90.0 - exo_alt.degrees
+    exo_theta2 = np.deg2rad(exo_az.degrees)
+    exo_r2 = 90.0 - exo_alt.degrees
 
     # convert az to radians for polar plot
     theta2 = np.deg2rad(az_deg)
@@ -285,7 +288,7 @@ with col3:
 
     # plot stars
     ax2.scatter(theta2, r2, s=star_sizes2, c="white")
-    ax2.scatter(exo_theta, exo_r, color='red', s=50, zorder=5,
+    ax2.scatter(exo_theta2, exo_r2, color='red', s=50, zorder=5,
         marker='o', edgecolors='darkred', linewidth=2)
 
     ax2.set_xlim(0, 2 * np.pi)
