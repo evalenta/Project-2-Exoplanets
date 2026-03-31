@@ -170,8 +170,6 @@ with col3:
 #setting up skyfield
     ts = load.timescale()
     t = ts.now()
-    #with load.open("hip_main.dat") as f:
-    #    df = hipparcos.load_dataframe(f)
     earth = load('de421.bsp')['earth']
 
     vizier = Vizier(columns=["*", 'RA2000', 'DE2000'], row_limit=-1)
