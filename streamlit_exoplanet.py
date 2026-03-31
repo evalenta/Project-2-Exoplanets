@@ -9,13 +9,9 @@ from llm_setup import llmCall
 import numpy as np
 import matplotlib.pyplot as plt
 from skyfield.api import load, Topos, Star
-from skyfield.data import hipparcos
 from skyfield.api import wgs84
 from astroquery.vizier import Vizier
-from astropy.coordinates import Angle
 import pandas as pd
-import csv
-from astropy.coordinates import SkyCoord
 from astropy import units as u
 
 # Tells pandas to read the CSV file, but skips the first 97 rows since they are not part of the data that is needed and acts as headers
